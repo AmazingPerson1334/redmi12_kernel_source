@@ -179,8 +179,8 @@ static int fpc_read_id(struct fpc_data *fpc,struct spi_device *spidev)
      int status;
      const int len = 3;
      struct spi_message m;
-     u8 rx[len] = {0, 0, 0};
-     u8 tx[len] = {0xfc, 0, 0};
+     u8 rx[len] = {};
+     u8 tx[len] = {};
 
     struct spi_transfer id = {
         .speed_hz = 1000000,
