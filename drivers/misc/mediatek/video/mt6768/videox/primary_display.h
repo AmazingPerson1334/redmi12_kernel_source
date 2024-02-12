@@ -55,6 +55,8 @@ extern unsigned int ap_fps_changed;
 extern unsigned int arr_fps_backup;
 extern unsigned int arr_fps_enable;
 extern unsigned int round_corner_offset_enable;
+extern int def_data_rate;
+extern int def_dsi_hbp;
 
 extern bool g_force_cfg;
 extern unsigned int g_force_cfg_id;
@@ -321,12 +323,6 @@ static inline char *power_mode_to_string(enum mtkfb_power_mode pm)
 typedef int (*PRIMARY_DISPLAY_CALLBACK) (unsigned int user_data);
 
 struct display_primary_path_context *_get_context(void);
-
-int _set_lcm_cmd_by_cmdq(unsigned int *lcm_cmd, unsigned int *lcm_count,
-	unsigned int *lcm_value);
-int _set_lcm_cabc_cmd_by_cmdq(unsigned int *lcm_cmd, unsigned int *lcm_count,
-	unsigned int level);
-
 void _primary_path_lock(const char *caller);
 void _primary_path_unlock(const char *caller);
 int primary_display_init(char *lcm_name, unsigned int lcm_fps,
@@ -411,10 +407,6 @@ int primary_display_get_original_height(void);
 int primary_display_lcm_ATA(void);
 int primary_display_setbacklight(unsigned int level);
 int primary_display_setbacklight_nolock(unsigned int level);
-
-int primary_display_set_cabc(unsigned int level);
-int primary_display_get_cabc(int *status);
-
 int primary_display_set_lcm_hbm(bool en);
 int primary_display_hbm_wait(bool en);
 int primary_display_setlcm_func_call(
@@ -502,12 +494,14 @@ int dynamic_debug_msg_print(unsigned int mva, int w, int h, int pitch,
 
 int display_enter_tui(void);
 int display_exit_tui(void);
+bool primary_display_is_tui_started(void);
 
 int primary_display_config_full_roi(struct disp_ddp_path_config *pconfig,
 	disp_path_handle disp_handle,
 		struct cmdqRecStruct *cmdq_handle);
 int primary_display_set_scenario(int scenario);
 enum DISP_MODULE_ENUM _get_dst_module_by_lcm(struct disp_lcm_handle *plcm);
+void set_cam_max_bw(int bw);
 extern void check_mm0_clk_sts(void);
 
 extern unsigned int dump_output;
@@ -539,5 +533,6 @@ bool primary_display_need_update_hrt_fps(
 
 /**************function for DynFPS end************************/
 #endif
+extern int mtk_notifier_call_chain(unsigned long val, void *v);
 
 #endif
